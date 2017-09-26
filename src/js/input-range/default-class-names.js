@@ -6,6 +6,7 @@
 const DEFAULT_CLASS_NAMES = {
   activeTrack: 'input-range__track input-range__track--active',
   disabledInputRange: 'input-range input-range--disabled',
+  insetInputRange: 'input-range--inset',
   inputRange: 'input-range',
   labelContainer: 'input-range__label-container',
   maxLabel: 'input-range__label input-range__label--max',

@@ -27,6 +27,7 @@ export default class InputRange extends React.Component {
       ariaControls: PropTypes.string,
       classNames: PropTypes.objectOf(PropTypes.string),
       disabled: PropTypes.bool,
+      inset: PropTypes.bool,
       draggableTrack: PropTypes.bool,
       formatLabel: PropTypes.func,
       maxValue: rangePropType,
@@ -155,11 +156,13 @@ export default class InputRange extends React.Component {
    * @return {string}
    */
   getComponentClassName() {
-    if (!this.props.disabled) {
-      return this.props.classNames.inputRange;
+    let className = this.props.disabled ? this.props.classNames.disabledInputRange : this.props.classNames.inputRange;
+
+    if (this.props.inset) {
+      className += ` ${this.props.classNames.insetInputRange}`;
     }
 
-    return this.props.classNames.disabledInputRange;
+    return className;
   }
 
   /**
@@ -664,6 +667,7 @@ export default class InputRange extends React.Component {
           onSliderKeyDown={this.handleSliderKeyDown}
           percentage={percentage}
           type={key}
+          inset={this.props.inset}
           value={value} />
       );
 

@@ -30,6 +30,8 @@ export default class ExampleApp extends React.Component {
         min: 2,
         max: 7,
       },
+
+      value9: 0,
     };
   }
 
@@ -99,6 +101,23 @@ export default class ExampleApp extends React.Component {
           step={3}
           value={this.state.value8}
           onChange={value => this.setState({ value8: value })}
+          onChangeComplete={value => console.log(value)} />
+
+        <InputRange
+          inset
+          maxValue={200}
+          minValue={0}
+          value={this.state.value9}
+          formatLabel={value => `${value} minutes`}
+          onChange={value => this.setState({ value9: value })}
+          onChangeComplete={value => console.log(value)} />
+
+        <InputRange
+          maxValue={200}
+          minValue={0}
+          value={this.state.value9}
+          formatLabel={value => `${value} minutes`}
+          onChange={value => this.setState({ value9: value })}
           onChangeComplete={value => console.log(value)} />
       </form>
     );

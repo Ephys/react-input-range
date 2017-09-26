@@ -24,3 +24,13 @@
   position: absolute;
   top: $input-range-label-value-position-top;
 }
+
+.input-range:not(.input-range--inset) .input-range__label,
+.input-range__label--value {
+  transition: transform 0.3s ease-out;
+  transform: translateX(-50%);
+}
+
+.input-range:not(.input-range--inset) .input-range__label--max {
+  transform: translateX(50%);
+}

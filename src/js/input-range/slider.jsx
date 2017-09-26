@@ -36,6 +36,7 @@ export default class Slider extends React.Component {
       percentage: PropTypes.number.isRequired,
       type: PropTypes.string.isRequired,
       value: PropTypes.number.isRequired,
+      inset: PropTypes.bool,
     };
   }
 
@@ -244,6 +245,7 @@ export default class Slider extends React.Component {
         ref={(node) => { this.node = node; }}
         style={style}>
         <Label
+          inset={this.props.inset}
           classNames={this.props.classNames}
           formatLabel={this.props.formatLabel}
           type="value">
