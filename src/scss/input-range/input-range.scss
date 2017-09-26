@@ -7,4 +7,5 @@
   height: $input-range-slider-height;
   position: relative;
   width: 100%;
+  padding: #{-$input-range-label-value-position-top} 0 #{-$input-range-label-position-bottom} 0;
 }
