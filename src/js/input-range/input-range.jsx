@@ -105,16 +105,6 @@ export default class InputRange extends React.Component {
     this.onNewProps(newProps);
   }
 
-  /**
-   * @ignore
-   * @override
-   * @return {void}
-   */
-  componentWillUnmount() {
-    this.removeDocumentMouseUpListener();
-    this.removeDocumentTouchEndListener();
-  }
-
   onNewProps(props) {
     /**
      * Value up to which the slider may go, rounded to the upper step. (eg. step = 6, min = 5, max = 20 - slider can go up to 23).
@@ -373,44 +363,6 @@ export default class InputRange extends React.Component {
   }
 
   /**
-   * Listen to mouseup event
-   * @private
-   * @return {void}
-   */
-  addDocumentMouseUpListener() {
-    this.removeDocumentMouseUpListener();
-    this.node.ownerDocument.addEventListener('mouseup', this.handleMouseUp);
-  }
-
-  /**
-   * Listen to touchend event
-   * @private
-   * @return {void}
-   */
-  addDocumentTouchEndListener() {
-    this.removeDocumentTouchEndListener();
-    this.node.ownerDocument.addEventListener('touchend', this.handleTouchEnd);
-  }
-
-  /**
-   * Stop listening to mouseup event
-   * @private
-   * @return {void}
-   */
-  removeDocumentMouseUpListener() {
-    this.node.ownerDocument.removeEventListener('mouseup', this.handleMouseUp);
-  }
-
-  /**
-   * Stop listening to touchend event
-   * @private
-   * @return {void}
-   */
-  removeDocumentTouchEndListener() {
-    this.node.ownerDocument.removeEventListener('touchend', this.handleTouchEnd);
-  }
-
-  /**
    * Handle any "mousemove" event received by the slider
    * @private
    * @param {SyntheticEvent} event
@@ -566,74 +518,6 @@ export default class InputRange extends React.Component {
   }
 
   /**
-   * Handle any "keydown" event received by the component
-   * @private
-   * @param {SyntheticEvent} event
-   * @return {void}
-   */
-  @autobind
-  handleKeyDown(event) {
-    this.handleInteractionStart(event);
-  }
-
-  /**
-   * Handle any "keyup" event received by the component
-   * @private
-   * @param {SyntheticEvent} event
-   * @return {void}
-   */
-  @autobind
-  handleKeyUp(event) {
-    this.handleInteractionEnd(event);
-  }
-
-  /**
-   * Handle any "mousedown" event received by the component
-   * @private
-   * @param {SyntheticEvent} event
-   * @return {void}
-   */
-  @autobind
-  handleMouseDown(event) {
-    this.handleInteractionStart(event);
-    this.addDocumentMouseUpListener();
-  }
-
-  /**
-   * Handle any "mouseup" event received by the component
-   * @private
-   * @param {SyntheticEvent} event
-   */
-  @autobind
-  handleMouseUp(event) {
-    this.handleInteractionEnd(event);
-    this.removeDocumentMouseUpListener();
-  }
-
-  /**
-   * Handle any "touchstart" event received by the component
-   * @private
-   * @param {SyntheticEvent} event
-   * @return {void}
-   */
-  @autobind
-  handleTouchStart(event) {
-    this.handleInteractionStart(event);
-    this.addDocumentTouchEndListener();
-  }
-
-  /**
-   * Handle any "touchend" event received by the component
-   * @private
-   * @param {SyntheticEvent} event
-   */
-  @autobind
-  handleTouchEnd(event) {
-    this.handleInteractionEnd(event);
-    this.removeDocumentTouchEndListener();
-  }
-
-  /**
    * Return JSX of sliders
    * @private
    * @return {JSX.Element}
@@ -716,10 +600,12 @@ export default class InputRange extends React.Component {
           this.node = node;
         }}
         className={componentClassName}
-        onKeyDown={this.handleKeyDown}
-        onKeyUp={this.handleKeyUp}
-        onMouseDown={this.handleMouseDown}
-        onTouchStart={this.handleTouchStart}>
+        onKeyDown={this.handleInteractionStart}
+        onKeyUp={this.handleInteractionEnd}
+        onMouseDown={this.handleInteractionStart}
+        onMouseUp={this.handleInteractionEnd}
+        onTouchStart={this.handleInteractionStart}
+        onTouchEnd={this.handleInteractionEnd}>
         <Label
           classNames={this.props.classNames}
           formatLabel={this.props.formatLabel}
