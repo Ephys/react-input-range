@@ -668,6 +668,7 @@ export default class InputRange extends React.Component {
           percentage={percentage}
           type={key}
           inset={this.props.inset}
+          disabled={this.props.disabled}
           value={value} />
       );
 

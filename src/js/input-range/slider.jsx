@@ -37,6 +37,7 @@ export default class Slider extends React.Component {
       type: PropTypes.string.isRequired,
       value: PropTypes.number.isRequired,
       inset: PropTypes.bool,
+      disabled: PropTypes.bool,
     };
   }
 
@@ -264,7 +265,7 @@ export default class Slider extends React.Component {
           onMouseDown={this.handleMouseDown}
           onTouchStart={this.handleTouchStart}
           role="slider"
-          tabIndex="0" />
+          tabIndex={this.props.disabled ? '-1' : '0'} />
       </span>
     );
   }
