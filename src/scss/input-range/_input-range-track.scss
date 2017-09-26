@@ -1,4 +1,4 @@
-.input-range__track {
+.input-range__track-background, .input-range__track-active {
   background: $input-range-track-background;
   border-radius: $input-range-track-height;
   cursor: pointer;
@@ -12,7 +12,7 @@
   }
 }
 
-.input-range__track--background {
+.input-range__track-background {
   left: 0;
   margin-top: -0.5 * $input-range-track-height;
   position: absolute;
@@ -20,6 +20,6 @@
   top: 50%;
 }
 
-.input-range__track--active {
+.input-range__track-active {
   background: $input-range-track-active-background;
 }

@@ -4,17 +4,17 @@
 * @type {InputRangeClassNames}
 */
 const DEFAULT_CLASS_NAMES = {
-  activeTrack: 'input-range__track input-range__track--active',
-  disabledInputRange: 'input-range input-range--disabled',
-  insetInputRange: 'input-range--inset',
   inputRange: 'input-range',
-  labelContainer: 'input-range__label-container',
-  maxLabel: 'input-range__label input-range__label--max',
-  minLabel: 'input-range__label input-range__label--min',
+  disabledInputRange: 'input-range--disabled',
+  insetInputRange: 'input-range--inset',
+  label: 'input-range__label',
+  maxLabel: 'input-range__label--max',
+  minLabel: 'input-range__label--min',
+  valueLabel: 'input-range__label--value',
   slider: 'input-range__slider',
   sliderContainer: 'input-range__slider-container',
-  track: 'input-range__track input-range__track--background',
-  valueLabel: 'input-range__label input-range__label--value',
+  track: 'input-range__track-background',
+  activeTrack: 'input-range__track-active',
 };
 
 export default DEFAULT_CLASS_NAMES;

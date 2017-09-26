@@ -38,6 +38,10 @@ export default class Label extends React.Component {
     return `translateX(calc(-50% + ${endOverflow + startOverflow}px))`;
   }
 
+  getClassName() {
+    return `${this.props.classNames.label} ${this.props.classNames[`${this.props.type}Label`]}`;
+  }
+
   @bind
   bindLabel(label) {
     this.setState({ label });
@@ -48,7 +52,7 @@ export default class Label extends React.Component {
 
     return (
       <span
-        className={this.props.classNames[`${this.props.type}Label`]}
+        className={this.getClassName()}
         ref={this.bindLabel}
         style={{
           transform: this.getLabelOffset(),

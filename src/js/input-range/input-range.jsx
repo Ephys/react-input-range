@@ -155,7 +155,11 @@ export default class InputRange extends React.Component {
    * @return {string}
    */
   getComponentClassName() {
-    let className = this.props.disabled ? this.props.classNames.disabledInputRange : this.props.classNames.inputRange;
+    let className = this.props.classNames.inputRange;
+
+    if (this.props.disabled) {
+      className += ` ${this.props.classNames.disabledInputRange}`;
+    }
 
     if (this.props.inset) {
       className += ` ${this.props.classNames.insetInputRange}`;
