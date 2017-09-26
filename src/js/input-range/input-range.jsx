@@ -93,16 +93,25 @@ export default class InputRange extends React.Component {
      */
     this.trackNode = null;
 
-    /**
-     * @private
-     * @type {bool}
-     */
-    this.isSliderDragging = false;
+    this.currentSlider = null;
+
+    this.isTrackDragging = false;
+
     this.onNewProps(props);
+  }
+
+  componentWillMount() {
+    document.addEventListener('mouseup', this.handleInteractionEnd, { passive: true });
+    document.body.addEventListener('mousemove', this.handleSliderDrag, { passive: true });
   }
 
   componentWillReceiveProps(newProps) {
     this.onNewProps(newProps);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mouseup', this.handleInteractionEnd, { passive: true });
+    document.body.removeEventListener('mousemove', this.handleSliderDrag, { passive: true });
   }
 
   onNewProps(props) {
@@ -197,6 +206,10 @@ export default class InputRange extends React.Component {
     }
 
     return ['max'];
+  }
+
+  get isSliderDragging() {
+    return this.currentSlider != null;
   }
 
   /**
@@ -366,18 +379,16 @@ export default class InputRange extends React.Component {
    * Handle any "mousemove" event received by the slider
    * @private
    * @param {SyntheticEvent} event
-   * @param {string} key
    * @return {void}
    */
   @autobind
-  handleSliderDrag(event, key) {
-    if (this.props.disabled) {
+  handleSliderDrag(event) {
+    if (this.props.disabled || !this.isSliderDragging) {
       return;
     }
 
     const position = valueTransformer.getPositionFromEvent(event, this.getTrackClientRect());
-    this.isSliderDragging = true;
-    requestAnimationFrame(() => this.updatePosition(key, position));
+    requestAnimationFrame(() => this.updatePosition(this.currentSlider, position));
   }
 
   /**
@@ -465,8 +476,6 @@ export default class InputRange extends React.Component {
       value: { max, min },
     } = this.props;
 
-    event.preventDefault();
-
     const value = valueTransformer.getValueFromPosition(position, this.props.minValue, this.props.maxValue, this.getTrackClientRect());
     let stepValue = valueTransformer.roundToStep(value, this.props.minValue, this.props.maxValue, this.props.step);
 
@@ -476,7 +485,21 @@ export default class InputRange extends React.Component {
 
     if (!this.props.draggableTrack || stepValue > max || stepValue < min) {
       this.updatePosition(this.getKeyByPosition(position), position);
+    } else {
+      this.isTrackDragging = true;
     }
+  }
+
+  @autobind
+  handleDragStart(event) {
+    if (this.isTrackDragging) {
+      return;
+    }
+
+    const position = valueTransformer.getPositionFromEvent(event, this.getTrackClientRect());
+    this.currentSlider = this.getKeyByPosition(position);
+
+    this.handleInteractionStart();
   }
 
   /**
@@ -502,9 +525,12 @@ export default class InputRange extends React.Component {
    */
   @autobind
   handleInteractionEnd() {
-    if (this.isSliderDragging) {
-      this.isSliderDragging = false;
+    if (!this.isSliderDragging && !this.isTrackDragging) {
+      return;
     }
+
+    this.currentSlider = null;
+    this.isTrackDragging = false;
 
     if (!this.props.onChangeComplete || !isDefined(this.startValue)) {
       return;
@@ -547,8 +573,8 @@ export default class InputRange extends React.Component {
           key={key}
           maxValue={maxValue}
           minValue={minValue}
-          onSliderDrag={this.handleSliderDrag}
           onSliderKeyDown={this.handleSliderKeyDown}
+          onDragStart={this.handleDragStart}
           percentage={percentage}
           type={key}
           inset={this.props.inset}
@@ -602,9 +628,11 @@ export default class InputRange extends React.Component {
         className={componentClassName}
         onKeyDown={this.handleInteractionStart}
         onKeyUp={this.handleInteractionEnd}
-        onMouseDown={this.handleInteractionStart}
-        onMouseUp={this.handleInteractionEnd}
-        onTouchStart={this.handleInteractionStart}
+
+        onMouseDown={this.handleDragStart}
+
+        onTouchStart={this.handleDragStart}
+        onTouchMove={this.handleSliderDrag}
         onTouchEnd={this.handleInteractionEnd}>
         <Label
           classNames={this.props.classNames}

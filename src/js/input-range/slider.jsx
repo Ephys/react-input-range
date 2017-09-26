@@ -31,8 +31,8 @@ export default class Slider extends React.Component {
       formatLabel: PropTypes.func,
       maxValue: PropTypes.number,
       minValue: PropTypes.number,
-      onSliderDrag: PropTypes.func.isRequired,
       onSliderKeyDown: PropTypes.func.isRequired,
+      onDragStart: PropTypes.func.isRequired,
       percentage: PropTypes.number.isRequired,
       type: PropTypes.string.isRequired,
       value: PropTypes.number.isRequired,
@@ -50,7 +50,7 @@ export default class Slider extends React.Component {
    * @param {number} [props.maxValue]
    * @param {number} [props.minValue]
    * @param {Function} props.onSliderKeyDown
-   * @param {Function} props.onSliderDrag
+   * @param {Function} props.onDragStart
    * @param {number} props.percentage
    * @param {number} props.type
    * @param {number} props.value
@@ -66,18 +66,6 @@ export default class Slider extends React.Component {
   }
 
   /**
-   * @ignore
-   * @override
-   * @return {void}
-   */
-  componentWillUnmount() {
-    this.removeDocumentMouseMoveListener();
-    this.removeDocumentMouseUpListener();
-    this.removeDocumentTouchEndListener();
-    this.removeDocumentTouchMoveListener();
-  }
-
-  /**
    * @private
    * @return {Object}
    */
@@ -89,138 +77,6 @@ export default class Slider extends React.Component {
     };
 
     return style;
-  }
-
-  /**
-   * Listen to mousemove event
-   * @private
-   * @return {void}
-   */
-  addDocumentMouseMoveListener() {
-    this.removeDocumentMouseMoveListener();
-    this.node.ownerDocument.addEventListener('mousemove', this.handleMouseMove);
-  }
-
-  /**
-   * Listen to mouseup event
-   * @private
-   * @return {void}
-   */
-  addDocumentMouseUpListener() {
-    this.removeDocumentMouseUpListener();
-    this.node.ownerDocument.addEventListener('mouseup', this.handleMouseUp);
-  }
-
-  /**
-   * Listen to touchmove event
-   * @private
-   * @return {void}
-   */
-  addDocumentTouchMoveListener() {
-    this.removeDocumentTouchMoveListener();
-    this.node.ownerDocument.addEventListener('touchmove', this.handleTouchMove);
-  }
-
-  /**
-   * Listen to touchend event
-   * @private
-   * @return {void}
-   */
-  addDocumentTouchEndListener() {
-    this.removeDocumentTouchEndListener();
-    this.node.ownerDocument.addEventListener('touchend', this.handleTouchEnd);
-  }
-
-  /**
-   * @private
-   * @return {void}
-   */
-  removeDocumentMouseMoveListener() {
-    this.node.ownerDocument.removeEventListener('mousemove', this.handleMouseMove);
-  }
-
-  /**
-   * @private
-   * @return {void}
-   */
-  removeDocumentMouseUpListener() {
-    this.node.ownerDocument.removeEventListener('mouseup', this.handleMouseUp);
-  }
-
-  /**
-   * @private
-   * @return {void}
-   */
-  removeDocumentTouchMoveListener() {
-    this.node.ownerDocument.removeEventListener('touchmove', this.handleTouchMove);
-  }
-
-  /**
-   * @private
-   * @return {void}
-   */
-  removeDocumentTouchEndListener() {
-    this.node.ownerDocument.removeEventListener('touchend', this.handleTouchEnd);
-  }
-
-  /**
-   * @private
-   * @return {void}
-   */
-  @autobind
-  handleMouseDown() {
-    this.addDocumentMouseMoveListener();
-    this.addDocumentMouseUpListener();
-  }
-
-  /**
-   * @private
-   * @return {void}
-   */
-  @autobind
-  handleMouseUp() {
-    this.removeDocumentMouseMoveListener();
-    this.removeDocumentMouseUpListener();
-  }
-
-  /**
-   * @private
-   * @param {SyntheticEvent} event
-   * @return {void}
-   */
-  @autobind
-  handleMouseMove(event) {
-    this.props.onSliderDrag(event, this.props.type);
-  }
-
-  /**
-   * @private
-   * @return {void}
-   */
-  @autobind
-  handleTouchStart() {
-    this.addDocumentTouchEndListener();
-    this.addDocumentTouchMoveListener();
-  }
-
-  /**
-   * @private
-   * @param {SyntheticEvent} event
-   * @return {void}
-   */
-  @autobind
-  handleTouchMove(event) {
-    this.props.onSliderDrag(event, this.props.type);
-  }
-
-  /**
-   * @private
-   * @return {void}
-   */
-  @autobind
-  handleTouchEnd() {
-    this.removeDocumentTouchMoveListener();
-    this.removeDocumentTouchEndListener();
   }
 
   /**
@@ -262,8 +118,8 @@ export default class Slider extends React.Component {
           className={this.props.classNames.slider}
           draggable="false"
           onKeyDown={this.handleKeyDown}
-          onMouseDown={this.handleMouseDown}
-          onTouchStart={this.handleTouchStart}
+          onMouseDown={this.props.onDragStart}
+          onTouchStart={this.props.onDragStart}
           role="slider"
           tabIndex={this.props.disabled ? '-1' : '0'} />
       </span>

@@ -140,6 +140,8 @@ export default class Track extends React.Component {
    */
   @autobind
   handleMouseDown(event) {
+    event.preventDefault();
+
     const clientX = event.touches ? event.touches[0].clientX : event.clientX;
     const trackClientRect = this.getClientRect();
     const position = {
@@ -156,17 +158,6 @@ export default class Track extends React.Component {
   }
 
   /**
-   * @private
-   * @param {SyntheticEvent} event - User event
-   */
-  @autobind
-  handleTouchStart(event) {
-    event.preventDefault();
-
-    this.handleMouseDown(event);
-  }
-
-  /**
    * @override
    * @return {JSX.Element}
    */
@@ -177,7 +168,7 @@ export default class Track extends React.Component {
       <div
         className={this.props.classNames.track}
         onMouseDown={this.handleMouseDown}
-        onTouchStart={this.handleTouchStart}
+        onTouchStart={this.handleMouseDown}
         ref={(node) => { this.node = node; }}>
         <div
           style={activeTrackStyle}
