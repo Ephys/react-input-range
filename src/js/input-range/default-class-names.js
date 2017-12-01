@@ -1,8 +1,8 @@
 /**
-* Default CSS class names
-* @ignore
-* @type {InputRangeClassNames}
-*/
+ * Default CSS class names
+ * @ignore
+ * @type {InputRangeClassNames}
+ */
 const DEFAULT_CLASS_NAMES = {
   inputRange: 'input-range',
   disabledInputRange: 'input-range--disabled',
